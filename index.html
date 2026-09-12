@@ -218,7 +218,7 @@
             border-bottom: 1px solid #202020;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: space-between;
             gap: 10px;
         }
 
@@ -1941,7 +1941,7 @@
                 </a>
             </li>
             <li>
-                <a id="mobileWaContactLink" href="https://wa.me/54911XXXXXXXX" target="_blank">
+                <a id="mobileWaContactLink" href="#" target="_blank">
                     <span><i class="fab fa-whatsapp" style="margin-right:10px; color:#25d366;"></i> Contactar por WhatsApp</span>
                 </a>
             </li>
@@ -2036,7 +2036,7 @@
             <div class="header-socials">
                 <a href="https://www.instagram.com/valo.equipamientos?igsi=bzd1cDU4MjN5dWxz&utm_source=qr" target="_blank"><i class="fab fa-instagram"></i></a>
                 <a href="https://www.tiktok.com/@valo.equipamientos?_r=1&_t=ZS-99D6uSFf6ql" target="_blank"><i class="fab fa-tiktok"></i></a>
-                <a id="headerWaIcon" href="https://wa.me/54911XXXXXXXX" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a id="headerWaIcon" href="#" target="_blank"><i class="fab fa-whatsapp"></i></a>
             </div>
         </div>
     </header>
@@ -2385,7 +2385,7 @@
     </footer>
 
     <script>
-        // ⚠️ CAMBIA ESTE NÚMERO POR EL TUYO REAL SIN ESPACIOS NI GUIONES (Ejemplo: "5491112345678")
+        // ⚠️ REEMPLAZA LOS NÚMEROS DE ABAJO POR TU NÚMERO DE TELÉFONO REAL DE WHATSAPP
         const PHONE_NUMBER = "5491124814868"; 
         const WA_DIRECT_URL = `https://wa.me/${PHONE_NUMBER}`;
         const ADMIN_PASS = "valo";
@@ -2434,7 +2434,6 @@
         window.onload = function() {
             updateAccountUI();
 
-            // Set default WA links
             if (document.getElementById('mobileWaContactLink')) document.getElementById('mobileWaContactLink').href = WA_DIRECT_URL;
             if (document.getElementById('headerWaIcon')) document.getElementById('headerWaIcon').href = WA_DIRECT_URL;
             if (document.getElementById('floatWaBtn')) document.getElementById('floatWaBtn').href = WA_DIRECT_URL;
@@ -3766,8 +3765,9 @@
                 });
             }
 
+            // ENVIAR ÚNICAMENTE EL LINK DIRECTO DEL PRODUCTO POR WHATSAPP
             const currentProductUrl = `${window.location.origin}${window.location.pathname}#${sku}`;
-            const msgText = `Hola!, Estoy interesado en este producto:\n${name} (Código: ${sku})\n\nLink: ${currentProductUrl}`;
+            const msgText = currentProductUrl;
             document.getElementById('detailWaBtn').href = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msgText)}`;
 
             document.getElementById('detailAddCartBtn').onclick = () => addToCart(itemData);
