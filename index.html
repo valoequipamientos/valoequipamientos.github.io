@@ -2984,7 +2984,7 @@
 
         function toggleCart() {
             document.getElementById('cartSidebar').classList.toggle('active');
-            document.getElementById('overlay').classList.toggle('active');
+            document.getElementById('overlay').classList.add('active');
         }
 
         function closeAllSidebars() {
@@ -3392,10 +3392,13 @@
                 subtotalNum += (item.rawPriceNum || 0) * item.qty;
             });
 
+            // AQUÍ USAMOS EXACTAMENTE LA URL ACTUAL DE LA BARRA DE DIRECCIONES (window.location.href) 
+            // pero asegurando que cada producto tenga su SKU exacto en el parámetro.
+            const baseUrl = window.location.href.split('?')[0].split('#')[0];
+
             let waMsg = "Hola @VALO.EQUIPAMIENTOS, quiero realizar la siguiente consulta por mi pedido:\n\n";
             cart.forEach(item => {
-                const cleanBaseUrl = window.location.href.split('?')[0].split('#')[0];
-                const itemUrl = `${cleanBaseUrl}?sku=${item.sku}`;
+                const itemUrl = `${baseUrl}?sku=${item.sku}`;
                 waMsg += `▪ *${item.name}* (Código: ${item.sku}) x${item.qty} u.\n🔗 Link: ${itemUrl}\n\n`;
             });
             if (subtotalNum > 0) {
@@ -3785,8 +3788,8 @@
                 });
             }
 
-            const cleanBaseUrl = window.location.href.split('?')[0].split('#')[0];
-            const currentProductUrl = `${cleanBaseUrl}?sku=${sku}`;
+            // AQUÍ USAMOS EXACTAMENTE LA URL ACTUAL DE LA BARRA DE DIRECCIONES (window.location.href)
+            const currentProductUrl = window.location.href;
             const msgText = `Hola!, Estoy interesado en este producto:\n*${name}* (Código: ${sku})\nPrecio: ${price || 'Consultar'}\n\n🔗 Link: ${currentProductUrl}`;
             
             const detailWaBtn = document.getElementById('detailWaBtn');
