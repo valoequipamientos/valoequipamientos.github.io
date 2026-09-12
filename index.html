@@ -2474,15 +2474,15 @@
             renderFavorites();
             renderFeaturedProducts();
             
-            if (window.location.hash) {
-                checkHashAndOpenProduct();
-            }
+            checkHashAndOpenProduct();
         }
 
         function checkHashAndOpenProduct() {
-            const hash = window.location.hash.replace('#', '');
-            if (hash && rawProducts.length > 0) {
-                const product = rawProducts.find(p => p.sku === hash);
+            const urlParams = new URLSearchParams(window.location.search);
+            const skuParam = urlParams.get('sku') || window.location.hash.replace('#', '').trim();
+            
+            if (skuParam && rawProducts.length > 0) {
+                const product = rawProducts.find(p => String(p.sku).trim() === String(skuParam).trim());
                 if (product) {
                     openProductDetailPage(product);
                 }
@@ -3425,8 +3425,8 @@
 
             let waMsg = "Hola @VALO.EQUIPAMIENTOS, quiero realizar la siguiente consulta por mi pedido:\n\n";
             cart.forEach(item => {
-                const itemUrl = `${window.location.origin}${window.location.pathname}#${item.sku}`;
-                waMsg += `▪ *${item.name}* (Código: ${item.sku}) x${item.qty} u.\n🔗 ${itemUrl}\n\n`;
+                const itemUrl = `${window.location.origin}${window.location.pathname}?sku=${item.sku}`;
+                waMsg += `▪ *${item.name}* (Código: ${item.sku}) x${item.qty} u.\n🔗 Link: ${itemUrl}\n\n`;
             });
             if (subtotalNum > 0) {
                 waMsg += `*Subtotal estimado:* ${formatCurrencyNumberToString(subtotalNum)}\n`;
@@ -3737,7 +3737,9 @@
         function openProductDetailPage(itemData) {
             const { imgUrl, gallery, name, category, price, sku, description } = itemData;
 
-            window.location.hash = sku;
+            // Actualizar la URL con el parámetro ?sku= para permitir compartirlo
+            const newUrl = `${window.location.pathname}?sku=${sku}`;
+            window.history.pushState({ sku }, '', newUrl);
 
             document.getElementById('detailBreadcrumbs').textContent = `Inicio / ${category} / ${name}`;
             document.getElementById('detailImg').src = imgUrl;
@@ -3766,8 +3768,8 @@
                 });
             }
 
-            // ENVIAR EL TEXTO Y EL LINK DIRECTO DEL PRODUCTO POR WHATSAPP
-            const currentProductUrl = `${window.location.origin}${window.location.pathname}#${sku}`;
+            // ENVIAR EL TEXTO Y EL LINK EXACTO DEL PRODUCTO POR WHATSAPP
+            const currentProductUrl = `${window.location.origin}${window.location.pathname}?sku=${sku}`;
             const msgText = `Hola!, Estoy interesado en este producto:\n*${name}* (Código: ${sku})\nPrecio: ${price || 'Consultar'}\n\n🔗 Link: ${currentProductUrl}`;
             document.getElementById('detailWaBtn').href = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msgText)}`;
 
