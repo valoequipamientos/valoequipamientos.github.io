@@ -1941,7 +1941,7 @@
                 </a>
             </li>
             <li>
-                <a href="https://wa.me/message/Y7KLUKAJKRFWA1" target="_blank">
+                <a id="mobileWaContactLink" href="https://wa.me/54911XXXXXXXX" target="_blank">
                     <span><i class="fab fa-whatsapp" style="margin-right:10px; color:#25d366;"></i> Contactar por WhatsApp</span>
                 </a>
             </li>
@@ -1971,7 +1971,7 @@
                 <span>Subtotal Estimado:</span>
                 <span id="cartSubtotal">$ 0,00</span>
             </div>
-            <a id="btnCheckoutWa" href="https://wa.me/message/Y7KLUKAJKRFWA1" target="_blank" class="btn-wa-checkout">
+            <a id="btnCheckoutWa" href="#" target="_blank" class="btn-wa-checkout">
                 <i class="fab fa-whatsapp"></i> Consultar Todo por WhatsApp
             </a>
         </div>
@@ -2036,7 +2036,7 @@
             <div class="header-socials">
                 <a href="https://www.instagram.com/valo.equipamientos?igsi=bzd1cDU4MjN5dWxz&utm_source=qr" target="_blank"><i class="fab fa-instagram"></i></a>
                 <a href="https://www.tiktok.com/@valo.equipamientos?_r=1&_t=ZS-99D6uSFf6ql" target="_blank"><i class="fab fa-tiktok"></i></a>
-                <a href="https://wa.me/message/Y7KLUKAJKRFWA1" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a id="headerWaIcon" href="https://wa.me/54911XXXXXXXX" target="_blank"><i class="fab fa-whatsapp"></i></a>
             </div>
         </div>
     </header>
@@ -2265,7 +2265,7 @@
         </div>
 
         <div style="text-align:center; margin-top:35px;">
-            <a href="https://wa.me/message/Y7KLUKAJKRFWA1" target="_blank" class="btn-wa-detail-green" style="display:inline-flex;">
+            <a id="enviosWaBtn" href="#" target="_blank" class="btn-wa-detail-green" style="display:inline-flex;">
                 <i class="fab fa-whatsapp"></i> Cotizar mi envío por WhatsApp
             </a>
         </div>
@@ -2352,7 +2352,7 @@
                     </div>
 
                     <div class="detail-actions-row">
-                        <a id="detailWaBtn" href="https://wa.me/message/Y7KLUKAJKRFWA1" class="btn-wa-detail-green" target="_blank">
+                        <a id="detailWaBtn" href="#" class="btn-wa-detail-green" target="_blank">
                             <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
                         </a>
                         <button id="detailAddCartBtn" class="btn-detail-add-cart">
@@ -2375,7 +2375,7 @@
         </div>
     </section>
 
-    <a href="https://wa.me/message/Y7KLUKAJKRFWA1" class="whatsapp-float" target="_blank">
+    <a id="floatWaBtn" href="#" class="whatsapp-float" target="_blank">
         <i class="fab fa-whatsapp"></i>
     </a>
 
@@ -2385,7 +2385,9 @@
     </footer>
 
     <script>
-        const WA_DIRECT_URL = "https://wa.me/message/Y7KLUKAJKRFWA1";
+        // ⚠️ CAMBIA ESTE NÚMERO POR EL TUYO REAL SIN ESPACIOS NI GUIONES (Ejemplo: "5491112345678")
+        const PHONE_NUMBER = "54911XXXXXXXX"; 
+        const WA_DIRECT_URL = `https://wa.me/${PHONE_NUMBER}`;
         const ADMIN_PASS = "valo";
         const PLACEHOLDER_IMG = "https://via.placeholder.com/300x200/1a1a1a/ff6600?text=VALO+EQUIPAMIENTOS";
 
@@ -2431,6 +2433,12 @@
 
         window.onload = function() {
             updateAccountUI();
+
+            // Set default WA links
+            if (document.getElementById('mobileWaContactLink')) document.getElementById('mobileWaContactLink').href = WA_DIRECT_URL;
+            if (document.getElementById('headerWaIcon')) document.getElementById('headerWaIcon').href = WA_DIRECT_URL;
+            if (document.getElementById('floatWaBtn')) document.getElementById('floatWaBtn').href = WA_DIRECT_URL;
+            if (document.getElementById('enviosWaBtn')) document.getElementById('enviosWaBtn').href = WA_DIRECT_URL;
             
             Papa.parse('Catalogo_sin_descripciones.csv', {
                 download: true,
@@ -3425,7 +3433,7 @@
             }
             waMsg += "\n¿Tienen disponibilidad de stock y cómo coordino el pago por efectivo/transferencia?";
 
-            btnCheckoutWa.href = `${WA_DIRECT_URL}?text=${encodeURIComponent(waMsg)}`;
+            btnCheckoutWa.href = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(waMsg)}`;
         }
 
         function formatCurrencyNumberToString(num) {
@@ -3760,7 +3768,7 @@
 
             const currentProductUrl = `${window.location.origin}${window.location.pathname}#${sku}`;
             const msgText = `Hola!, Estoy interesado en este producto:\n${name} (Código: ${sku})\n\nLink: ${currentProductUrl}`;
-            document.getElementById('detailWaBtn').href = `https://wa.me/message/Y7KLUKAJKRFWA1?text=${encodeURIComponent(msgText)}`;
+            document.getElementById('detailWaBtn').href = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msgText)}`;
 
             document.getElementById('detailAddCartBtn').onclick = () => addToCart(itemData);
 
