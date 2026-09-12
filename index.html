@@ -3759,8 +3759,8 @@
             }
 
             const currentProductUrl = `${window.location.origin}${window.location.pathname}#${sku}`;
-            const msg = encodeURIComponent(`Hola!, Estoy interesado en este producto:\n*${name}* (Código: ${sku})\n\nLink: ${currentProductUrl}`);
-            document.getElementById('detailWaBtn').href = `${WA_DIRECT_URL}?text=${msg}`;
+            const msgText = `Hola!, Estoy interesado en este producto:\n${name} (Código: ${sku})\n\nLink: ${currentProductUrl}`;
+            document.getElementById('detailWaBtn').href = `https://wa.me/message/Y7KLUKAJKRFWA1?text=${encodeURIComponent(msgText)}`;
 
             document.getElementById('detailAddCartBtn').onclick = () => addToCart(itemData);
 
