@@ -2385,8 +2385,8 @@
     </footer>
 
     <script>
-        // ⚠️ REEMPLAZA LOS NÚMEROS DE ABAJO POR TU NÚMERO DE TELÉFONO REAL DE WHATSAPP
-        const PHONE_NUMBER = "5491123456789"; 
+        // 📱 NÚMERO DE WHATSAPP CONFIGURADO (1124814868)
+        const PHONE_NUMBER = "5491124814868"; 
         const WA_DIRECT_URL = `https://wa.me/${PHONE_NUMBER}`;
         const ADMIN_PASS = "valo";
         const PLACEHOLDER_IMG = "https://via.placeholder.com/300x200/1a1a1a/ff6600?text=VALO+EQUIPAMIENTOS";
@@ -2481,10 +2481,15 @@
             const urlParams = new URLSearchParams(window.location.search);
             const skuParam = urlParams.get('sku') || window.location.hash.replace('#', '').trim();
             
-            if (skuParam && rawProducts.length > 0) {
-                const product = rawProducts.find(p => String(p.sku).trim() === String(skuParam).trim());
-                if (product) {
-                    openProductDetailPage(product);
+            if (skuParam) {
+                if (rawProducts.length > 0) {
+                    const cleanSku = String(skuParam).trim().toLowerCase();
+                    const product = rawProducts.find(p => String(p.sku || '').trim().toLowerCase() === cleanSku);
+                    if (product) {
+                        openProductDetailPage(product);
+                    }
+                } else {
+                    setTimeout(checkHashAndOpenProduct, 500);
                 }
             }
         }
@@ -3737,7 +3742,6 @@
         function openProductDetailPage(itemData) {
             const { imgUrl, gallery, name, category, price, sku, description } = itemData;
 
-            // Actualizar la URL con el parámetro ?sku= para permitir compartirlo
             const newUrl = `${window.location.pathname}?sku=${sku}`;
             window.history.pushState({ sku }, '', newUrl);
 
@@ -3768,7 +3772,6 @@
                 });
             }
 
-            // ENVIAR EL TEXTO Y EL LINK EXACTO DEL PRODUCTO POR WHATSAPP
             const currentProductUrl = `${window.location.origin}${window.location.pathname}?sku=${sku}`;
             const msgText = `Hola!, Estoy interesado en este producto:\n*${name}* (Código: ${sku})\nPrecio: ${price || 'Consultar'}\n\n🔗 Link: ${currentProductUrl}`;
             document.getElementById('detailWaBtn').href = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msgText)}`;
