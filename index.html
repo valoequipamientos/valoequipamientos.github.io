@@ -1350,6 +1350,8 @@
             font-size: 1rem;
             box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
             transition: transform 0.2s, background-color 0.2s;
+            cursor: pointer;
+            border: none;
         }
 
         .btn-wa-detail-green:hover {
@@ -1626,6 +1628,8 @@
             text-align: center;
             width: 100%;
             transition: background-color 0.2s ease, transform 0.2s ease;
+            cursor: pointer;
+            border: none;
         }
 
         .btn-wa-checkout:hover { background-color: #1ebd59; transform: translateY(-2px); }
@@ -1971,9 +1975,9 @@
                 <span>Subtotal Estimado:</span>
                 <span id="cartSubtotal">$ 0,00</span>
             </div>
-            <a id="btnCheckoutWa" href="#" target="_blank" class="btn-wa-checkout">
+            <button id="btnCheckoutWa" onclick="openWhatsAppCheckout()" class="btn-wa-checkout">
                 <i class="fab fa-whatsapp"></i> Consultar Todo por WhatsApp
-            </a>
+            </button>
         </div>
     </aside>
 
@@ -2352,9 +2356,9 @@
                     </div>
 
                     <div class="detail-actions-row">
-                        <a id="detailWaBtn" href="#" class="btn-wa-detail-green" target="_blank">
+                        <button id="detailWaBtn" class="btn-wa-detail-green">
                             <i class="fab fa-whatsapp"></i> Consultar por WhatsApp
-                        </a>
+                        </button>
                         <button id="detailAddCartBtn" class="btn-detail-add-cart">
                             <i class="fas fa-cart-plus"></i> Agregar al Carrito
                         </button>
@@ -3382,6 +3386,27 @@
             }
         }
 
+        function openWhatsAppCheckout() {
+            let subtotalNum = 0;
+            cart.forEach(item => {
+                subtotalNum += (item.rawPriceNum || 0) * item.qty;
+            });
+
+            let waMsg = "Hola @VALO.EQUIPAMIENTOS, quiero realizar la siguiente consulta por mi pedido:\n\n";
+            cart.forEach(item => {
+                const cleanBaseUrl = window.location.href.split('?')[0].split('#')[0];
+                const itemUrl = `${cleanBaseUrl}?sku=${item.sku}`;
+                waMsg += `▪ *${item.name}* (Código: ${item.sku}) x${item.qty} u.\n🔗 Link: ${itemUrl}\n\n`;
+            });
+            if (subtotalNum > 0) {
+                waMsg += `*Subtotal estimado:* ${formatCurrencyNumberToString(subtotalNum)}\n`;
+            }
+            waMsg += "\n¿Tienen disponibilidad de stock y cómo coordino el pago?";
+
+            const finalWaUrl = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(waMsg)}`;
+            window.open(finalWaUrl, '_blank');
+        }
+
         function renderCart() {
             const cartItemsList = document.getElementById('cartItemsList');
             const cartCountBadge = document.getElementById('cartCountBadge');
@@ -3427,18 +3452,6 @@
 
             cartCountBadge.textContent = totalQty;
             cartSubtotal.textContent = formatCurrencyNumberToString(subtotalNum);
-
-            let waMsg = "Hola @VALO.EQUIPAMIENTOS, quiero realizar la siguiente consulta por mi pedido:\n\n";
-            cart.forEach(item => {
-                const itemUrl = `${window.location.origin}${window.location.pathname}?sku=${item.sku}`;
-                waMsg += `▪ *${item.name}* (Código: ${item.sku}) x${item.qty} u.\n🔗 Link: ${itemUrl}\n\n`;
-            });
-            if (subtotalNum > 0) {
-                waMsg += `*Subtotal estimado:* ${formatCurrencyNumberToString(subtotalNum)}\n`;
-            }
-            waMsg += "\n¿Tienen disponibilidad de stock y cómo coordino el pago?";
-
-            btnCheckoutWa.href = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(waMsg)}`;
         }
 
         function formatCurrencyNumberToString(num) {
@@ -3772,9 +3785,14 @@
                 });
             }
 
-            const currentProductUrl = `${window.location.origin}${window.location.pathname}?sku=${sku}`;
+            const cleanBaseUrl = window.location.href.split('?')[0].split('#')[0];
+            const currentProductUrl = `${cleanBaseUrl}?sku=${sku}`;
             const msgText = `Hola!, Estoy interesado en este producto:\n*${name}* (Código: ${sku})\nPrecio: ${price || 'Consultar'}\n\n🔗 Link: ${currentProductUrl}`;
-            document.getElementById('detailWaBtn').href = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msgText)}`;
+            
+            const detailWaBtn = document.getElementById('detailWaBtn');
+            detailWaBtn.onclick = () => {
+                window.open(`https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msgText)}`, '_blank');
+            };
 
             document.getElementById('detailAddCartBtn').onclick = () => addToCart(itemData);
 
