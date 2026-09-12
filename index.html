@@ -2466,6 +2466,20 @@
             renderCart();
             renderFavorites();
             renderFeaturedProducts();
+            
+            if (window.location.hash) {
+                checkHashAndOpenProduct();
+            }
+        }
+
+        function checkHashAndOpenProduct() {
+            const hash = window.location.hash.replace('#', '');
+            if (hash && rawProducts.length > 0) {
+                const product = rawProducts.find(p => p.sku === hash);
+                if (product) {
+                    openProductDetailPage(product);
+                }
+            }
         }
 
         function loadUserDataStorage() {
@@ -3715,6 +3729,8 @@
         function openProductDetailPage(itemData) {
             const { imgUrl, gallery, name, category, price, sku, description } = itemData;
 
+            window.location.hash = sku;
+
             document.getElementById('detailBreadcrumbs').textContent = `Inicio / ${category} / ${name}`;
             document.getElementById('detailImg').src = imgUrl;
             document.getElementById('detailTitle').textContent = name;
@@ -3742,7 +3758,8 @@
                 });
             }
 
-            const msg = encodeURIComponent(`Hola @VALO.EQUIPAMIENTOS, quiero consultar por el producto: ${name} (Código de producto: ${sku})`);
+            const currentProductUrl = `${window.location.origin}${window.location.pathname}#${sku}`;
+            const msg = encodeURIComponent(`Hola!, Estoy interesado en este producto:\n*${name}* (Código: ${sku})\n\nLink: ${currentProductUrl}`);
             document.getElementById('detailWaBtn').href = `${WA_DIRECT_URL}?text=${msg}`;
 
             document.getElementById('detailAddCartBtn').onclick = () => addToCart(itemData);
