@@ -2386,7 +2386,7 @@
 
     <script>
         // ⚠️ REEMPLAZA LOS NÚMEROS DE ABAJO POR TU NÚMERO DE TELÉFONO REAL DE WHATSAPP
-        const PHONE_NUMBER = "5491124814868"; 
+        const PHONE_NUMBER = "5491123456789"; 
         const WA_DIRECT_URL = `https://wa.me/${PHONE_NUMBER}`;
         const ADMIN_PASS = "valo";
         const PLACEHOLDER_IMG = "https://via.placeholder.com/300x200/1a1a1a/ff6600?text=VALO+EQUIPAMIENTOS";
@@ -3425,12 +3425,13 @@
 
             let waMsg = "Hola @VALO.EQUIPAMIENTOS, quiero realizar la siguiente consulta por mi pedido:\n\n";
             cart.forEach(item => {
-                waMsg += `▪ *${item.name}* (Código: ${item.sku}) x${item.qty} u.\n`;
+                const itemUrl = `${window.location.origin}${window.location.pathname}#${item.sku}`;
+                waMsg += `▪ *${item.name}* (Código: ${item.sku}) x${item.qty} u.\n🔗 ${itemUrl}\n\n`;
             });
             if (subtotalNum > 0) {
-                waMsg += `\n*Subtotal estimado:* ${formatCurrencyNumberToString(subtotalNum)}\n`;
+                waMsg += `*Subtotal estimado:* ${formatCurrencyNumberToString(subtotalNum)}\n`;
             }
-            waMsg += "\n¿Tienen disponibilidad de stock y cómo coordino el pago por efectivo/transferencia?";
+            waMsg += "\n¿Tienen disponibilidad de stock y cómo coordino el pago?";
 
             btnCheckoutWa.href = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(waMsg)}`;
         }
@@ -3765,9 +3766,9 @@
                 });
             }
 
-            // ENVIAR ÚNICAMENTE EL LINK DIRECTO DEL PRODUCTO POR WHATSAPP
+            // ENVIAR EL TEXTO Y EL LINK DIRECTO DEL PRODUCTO POR WHATSAPP
             const currentProductUrl = `${window.location.origin}${window.location.pathname}#${sku}`;
-            const msgText = currentProductUrl;
+            const msgText = `Hola!, Estoy interesado en este producto:\n*${name}* (Código: ${sku})\nPrecio: ${price || 'Consultar'}\n\n🔗 Link: ${currentProductUrl}`;
             document.getElementById('detailWaBtn').href = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msgText)}`;
 
             document.getElementById('detailAddCartBtn').onclick = () => addToCart(itemData);
