@@ -3404,7 +3404,7 @@
             waMsg += "\n¿Tienen disponibilidad de stock y cómo coordino el pago?";
 
             const finalWaUrl = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(waMsg)}`;
-            window.open(finalWaUrl, '_blank');
+            window.location.href = finalWaUrl;
         }
 
         function renderCart() {
@@ -3791,7 +3791,8 @@
             
             const detailWaBtn = document.getElementById('detailWaBtn');
             detailWaBtn.onclick = () => {
-                window.open(`https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msgText)}`, '_blank');
+                const finalWaUrl = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(msgText)}`;
+                window.location.href = finalWaUrl;
             };
 
             document.getElementById('detailAddCartBtn').onclick = () => addToCart(itemData);
